@@ -1,3 +1,4 @@
+```jsx
 "use client"
 
 export const dynamic = "force-static"
@@ -9,61 +10,65 @@ const lyrics = [
   {
     main: "तेरा होने",
     small: "लगा हूं",
-    duration: 4800,
+    duration: 3200,
   },
   {
-    main: "तेरा होने लगा",
-    small: "हूं",
-    duration: 4800,
+    main: "खोने",
+    small: "लगा हूं",
+    duration: 3500,
   },
   {
-    main: "खोने लगा",
-    small: "हूं",
-    duration: 4800,
+    main: "जब से",
+    small: "मिला हूं",
+    duration: 3800,
   },
   {
-    main: "खोने लगा हूं,",
-    small: "जब",
-    duration: 4800,
+    main: "तेरा होने",
+    small: "लगा हूं",
+    duration: 4000,
   },
   {
-    main: "खोने लगा हूं,",
-    small: "जब से मिला हूं",
-    duration: 4800,
+    main: "खोने",
+    small: "लगा हूं",
+    duration: 4200,
   },
   {
-    main: "तेरा होने लगा हूं",
-    small: "",
-    duration: 4800,
+    main: "जब से",
+    small: "मिला हूं",
+    duration: 4400,
   },
 ]
 
 export default function LyricsScreen({ onComplete }) {
-  const [current, setCurrent] = useState(0)
+  const [currentLyricIndex, setCurrentLyricIndex] = useState(0)
 
   useEffect(() => {
+    const currentDuration =
+      lyrics[currentLyricIndex].duration
+
     const timer = setTimeout(() => {
-      if (current < lyrics.length - 1) {
-        setCurrent((prev) => prev + 1)
+      if (currentLyricIndex < lyrics.length - 1) {
+        setCurrentLyricIndex((prev) => prev + 1)
       } else {
         onComplete?.()
       }
-    }, lyrics[current].duration)
+    }, currentDuration)
 
     return () => clearTimeout(timer)
-  }, [current, onComplete])
+  }, [currentLyricIndex, onComplete])
 
-  const lyric = lyrics[current]
+  const lyric = lyrics[currentLyricIndex]
 
   return (
-    <div className="fixed inset-0 bg-black flex items-center justify-center overflow-hidden">
+    <div className="w-full h-full flex items-center justify-center overflow-hidden">
+
       <AnimatePresence mode="wait">
         <motion.div
-          key={current}
+          key={currentLyricIndex}
           initial={{
             opacity: 0,
-            y: 12,
-            scale: 0.94,
+            y: 18,
+            scale: 0.92,
           }}
           animate={{
             opacity: 1,
@@ -72,21 +77,28 @@ export default function LyricsScreen({ onComplete }) {
           }}
           exit={{
             opacity: 0,
-            y: -10,
-            scale: 0.96,
+            y: -18,
+            scale: 0.95,
           }}
           transition={{
-            duration: 0.35,
-            ease: "easeOut",
+            duration: 0.55,
+            ease: "easeInOut",
           }}
           className="text-center px-6"
         >
+
           {/* MAIN LYRIC */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{
+              opacity: 0,
+              scale: 0.85,
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+            }}
             transition={{
-              duration: 0.55,
+              duration: 0.65,
               ease: [0.22, 1, 0.36, 1],
             }}
             className="
@@ -98,19 +110,19 @@ export default function LyricsScreen({ onComplete }) {
               lg:text-7xl
               leading-none
               tracking-tight
-              drop-shadow-[0_2px_8px_rgba(255,255,255,0.15)]
+              drop-shadow-[0_2px_10px_rgba(0,0,0,0.35)]
             "
           >
             {lyric.main}
           </motion.div>
 
-          {/* SMALL CONTINUATION */}
+          {/* SMALL LYRIC */}
           {lyric.small && (
             <motion.div
               initial={{
                 opacity: 0,
-                y: -3,
-                scale: 0.8,
+                y: -5,
+                scale: 0.85,
               }}
               animate={{
                 opacity: 1,
@@ -118,24 +130,29 @@ export default function LyricsScreen({ onComplete }) {
                 scale: 1,
               }}
               transition={{
-                delay: 0.25,
-                duration: 0.45,
+                delay: 0.2,
+                duration: 0.5,
+                ease: "easeOut",
               }}
               className="
                 text-white
                 font-semibold
-                text-lg
-                sm:text-xl
-                md:text-2xl
-                mt-1
+                text-xl
+                sm:text-2xl
+                md:text-3xl
+                mt-2
                 leading-none
+                drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]
               "
             >
               {lyric.small}
             </motion.div>
           )}
+
         </motion.div>
       </AnimatePresence>
+
     </div>
   )
 }
+```
